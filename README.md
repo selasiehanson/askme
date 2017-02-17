@@ -1,19 +1,4 @@
 # Askme
+A simple text base game server for text based games/quizzes
 
 **TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `askme` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [{:askme, "~> 0.1.0"}]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/askme](https://hexdocs.pm/askme).
-

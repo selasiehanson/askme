@@ -34,8 +34,9 @@ defmodule Askme.GameManager do
   Starts the game
   """
   def handle_call(:start_game, _from, game) do
-    modified_game = Map.put(game ,:game_state, :started)
-    {:reply, "Welcome to #{game.title}", modified_game }
+    game_state = :started
+    modified_game = Map.put(game ,:game_state, game_state)
+    {:reply, {"Welcome to #{game.title}", game_state}, modified_game }
   end
 
   def handle_call(:next_screen, _from, game) do

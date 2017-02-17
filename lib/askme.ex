@@ -3,16 +3,7 @@ defmodule Askme do
   Documentation for Askme.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Askme.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
+   def play do
+     
+   end
 end

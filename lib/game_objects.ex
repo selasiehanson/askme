@@ -1,5 +1,5 @@
 defmodule Askme.Player do
-  defstruct name: "", games_played: [], state: ""
+  defstruct name: "", games_played: [], state: "", id: ""
 end
 
 defmodule Askme.Answer do

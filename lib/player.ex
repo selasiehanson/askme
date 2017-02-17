@@ -10,7 +10,7 @@ defmodule Askme.PlayerAnswer do
   defstruct position: 1
 end
 
-defmodule Askme.Question do 
+defmodule Askme.Question do
   defstruct id: 0, text: "", possible_answers: [], answer_position: 0
 end
 
@@ -22,7 +22,7 @@ defmodule Askme.Game do
 
   @doc """
   game_mode: :single_play | :double_play
-  game_state: :started | :over
+  game_state: :not_started | :started | :game_over
   """
   defstruct title: "", questions: [], score: 0, players: [], game_mode: "",
             answers: [], game_state: ""
@@ -32,7 +32,7 @@ end
 defmodule Askme.GameManager do
   use GenServer
 
-  def start_game(game_id) do
+  def setup(game_id) do
 
     game = %Askme.Game {
       title: "Basic Maths",
@@ -40,25 +40,58 @@ defmodule Askme.GameManager do
       score: 0,
       game_mode: :single_player,
       answers: [],
-      game_state: :started
+      game_state: :not_started
     }
 
     {:ok, pid } = GenServer.start_link(__MODULE__, game, name: game_id)
+  end
+
+  # Public Api
+
+  def start_game(game_id) do
+    GenServer.call game_id, :start_game
   end
 
   def save_answer(answer_position) do
 
   end
 
-  def next do
-
+  def next(game_id) do
+    GenServer.call game_id, :next_screen
   end
 
-  defp next_screen() do
-
+  @doc """
+  Starts the game
+  """
+  def handle_call(:start_game, _from, game) do
+    modified_game = Map.put(game ,:game_state, :started)
+    {:reply, "Welcome to #{game.title}", modified_game }
   end
 
-  def get_questions do
+  def handle_call(:next_screen, _from, game) do
+    %{questions: qs, game_state: game_state} = game
+    {result, new_questions ,new_game_state} =  next_screen qs, game_state
+
+    game = %Askme.Game{ game | game_state: new_game_state, questions: new_questions }
+
+    {:reply, {result, new_game_state}, game}
+  end
+
+
+  defp next_screen([head | tail], game_state) do
+    {head, tail,game_state}
+  end
+
+  defp next_screen([], game_state) do
+    # game is over
+    {"You won", [],:game_over}
+  end
+
+  defp calulate_score do
+    0
+  end
+
+  defp get_questions do
     q1 = %Askme.Question{
       text: "1 + 1 = 3",
       possible_answers: [
@@ -88,7 +121,7 @@ defmodule Askme.GameManager do
         %Askme.Answer{position: 3, text: "3"},
         %Askme.Answer{position: 4, text: "1"},
         %Askme.Answer{position: 5, text: "None of the above"}
-      ],      
+      ],
       answer_position: 2
     }
 

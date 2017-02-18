@@ -21,9 +21,9 @@ end
 defmodule Askme.Game do
 
   @doc """
-  game_mode: :single_play | :double_play
+  game_mode:  :single_play | :double_play
   game_state: :not_started | :started | :game_over
   """
-  defstruct title: "", questions: [], score: 0, players: [], game_mode: "",
-            answers: [], game_state: ""
+  defstruct [:title, :questions, :score, :players, :game_mode,
+             :answers, :game_state, :current_question, :expects_answer]
 end

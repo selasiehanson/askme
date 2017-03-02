@@ -28,6 +28,9 @@ defmodule Askme.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-     [ { :uuid, "~> 1.1" } ]
+     [ 
+       { :uuid, "~> 1.1" },
+       { :poison, "~> 3.0"}
+     ]
   end
 end

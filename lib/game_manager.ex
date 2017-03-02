@@ -6,7 +6,7 @@ defmodule Askme.GameManager do
 
     game = %Askme.Game {
       title: "Basic Maths",
-      questions: get_questions(),
+      questions: [],
       score: 0,
       game_mode: :single_player,
       answers: [],
@@ -19,6 +19,11 @@ defmodule Askme.GameManager do
 
   # Public Api
 
+  def load_game(game_id, questions) do 
+
+    GenServer.call game_id, {:load, questions}
+  end
+
   def start_game(game_id) do
     GenServer.call game_id, :start_game
   end
@@ -29,6 +34,11 @@ defmodule Askme.GameManager do
 
   def next(game_id, previous_input) do
     GenServer.call game_id, {:next_screen, previous_input}
+  end
+
+  def handle_call({:load_game, questions}, _from, game) do 
+    new_game = Map.put(game, :questions, questions)
+    {:reply, {:ok, true}, new_game }
   end
 
   @doc """
